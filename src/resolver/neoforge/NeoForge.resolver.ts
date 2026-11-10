@@ -101,7 +101,15 @@ export class NeoForgeResolver extends BaseResolver {
                 group: LibRepoStructure.NEOFORGE_GROUP,
                 artifact: LibRepoStructure.NEOFORGE_ARTIFACT,
                 version: this.artifactVersion,
-                classifiers: ['universal']
+                classifiers: ['universal'],
+                // Must NOT be on the classpath. NeoForge's version.json omits every
+                // net.neoforged:neoforge artifact from its runtime libraries: FML
+                // locates the universal jar via -DlibraryDirectory and loads it into
+                // the game layer itself. On the classpath it instead defines the
+                // net.minecraft packages in the boot layer, so the game layer's
+                // lookups fall through to BuiltinClassLoader and die with
+                // NoClassDefFoundError on the first Minecraft class touched.
+                classpath: false
             },
             // The binary-patched Minecraft client. FML locates this through
             // -DlibraryDirectory rather than the classpath.

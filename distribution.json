@@ -8,7 +8,7 @@
       "description": "Black Clover Republic Official Server",
       "icon": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/server-icon.png",
       "version": "0.2.15",
-      "address": "play.blackcloverrepublic.net",
+      "address": "localhost:25565",
       "minecraftVersion": "1.21.1",
       "discord": {
         "shortId": "Black Clover",
@@ -31,7 +31,7 @@
           "id": "net.neoforged:neoforge:21.1.262:universal",
           "name": "NeoForge (universal jar)",
           "type": "ForgeHosted",
-          "classpath": true,
+          "classpath": false,
           "artifact": {
             "size": 3554347,
             "MD5": "1cebbf20bf29b5c8c5539c0e57a357e3",
