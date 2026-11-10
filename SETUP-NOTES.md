@@ -95,24 +95,39 @@ manifest, so NeoForge's bootstrap and module path pass through untouched.
 
 Full reasoning is in the `feat: add NeoForge support` commit message.
 
-## This repo vs upstream Nebula
+## Git setup
 
-A real clone of `dscalzi/Nebula`, so it opens normally in VS Code and GitHub Desktop.
+This is a standalone repo, **not** a fork of Nebula. `origin` is
+`https://github.com/Vesuviuz1/BCRutility.git`, branch `main`.
 
-- `main` carries the NeoForge work on top of upstream `master`.
-- The remote is named **`upstream`** (dscalzi's repo) — you have no push access
-  there. GitHub Desktop's **Publish repository** will create your own and set
-  `origin`, leaving `upstream` intact.
-
-Pulling upstream changes later:
+It does carry Nebula's commit history, which is only useful if you ever want to
+pull upstream fixes. That is optional and not set up — to do it later:
 
 ```
+git remote add upstream https://github.com/dscalzi/Nebula.git
 git fetch upstream
 git rebase upstream/master
 npm i && npm run build
 ```
 
+Don't add that remote before publishing, though: when dscalzi's repo is the only
+remote, GitHub Desktop identifies the folder as "Nebula" instead of yours.
+
 `.env` is gitignored, so it survives all of this.
+
+### Publishing the first time
+
+The repo must exist on GitHub before the first push, since `origin` is already set
+(GitHub Desktop only offers **Publish repository** when there is no remote):
+
+1. Create an **empty** repo at <https://github.com/new> named `BCRutility` — no
+   README, no .gitignore, no license, or the first push will be rejected.
+2. In GitHub Desktop: **Push origin**.
+
+Prefer Desktop's own publish flow instead? Run `git remote remove origin` first,
+then **Publish repository** and name it `BCRutility`.
+
+It must be **public**, or raw URLs 404 for players.
 
 ## Verifying a distro
 

@@ -1,3 +1,24 @@
+# BCRutility
+
+Distribution root for the **Black Clover Republic** launcher, and the tool that
+generates it.
+
+Currently ships **Minecraft 1.21.1 / NeoForge 21.1.262**.
+
+This repo serves `distribution.json`, `repo/` and `servers/` straight to the
+launcher over GitHub raw, and contains the generator itself — so shipping a mod
+update is: drop jars in `servers/<server>/forgemods/required/`, run
+`npm start -- generate distro`, commit, push.
+
+**See [SETUP-NOTES.md](SETUP-NOTES.md)** for the full workflow, the file-size
+limits that matter, and how NeoForge support works.
+
+Built on [Nebula](https://github.com/dscalzi/Nebula) by Daniel Scalzi (MIT), with
+NeoForge support added — upstream handles only Forge and Fabric, and neither can
+ship a 1.21 pack through Helios. The original Nebula documentation follows.
+
+---
+
 # Nebula
 
 Generate a distribution.json for Helios. Documentation on this format can be found [here][distro.md].
