@@ -15,6 +15,7 @@ export interface UntrackedFilesOption {
 export interface ServerMetaOptions {
     version?: string
     forgeVersion?: string
+    neoforgeVersion?: string
     fabricVersion?: string
 }
 
@@ -41,6 +42,13 @@ export function getDefaultServerMeta(id: string, version: string, options?: Serv
         servMeta.meta.description = `${servMeta.meta.description} (Forge v${options.forgeVersion})`
         servMeta.forge = {
             version: options.forgeVersion
+        }
+    }
+
+    if(options?.neoforgeVersion) {
+        servMeta.meta.description = `${servMeta.meta.description} (NeoForge v${options.neoforgeVersion})`
+        servMeta.neoforge = {
+            version: options.neoforgeVersion
         }
     }
 
@@ -81,6 +89,18 @@ export interface ServerMeta {
         /**
          * The forge version. This does NOT include the minecraft version.
          * Ex. 14.23.5.2854
+         */
+        version: string
+    }
+
+    /**
+     * Properties related to NeoForge.
+     */
+    neoforge?: {
+        /**
+         * The NeoForge version. NeoForge versions are derived from the Minecraft
+         * version they target and do NOT include it as a prefix.
+         * Ex. 21.1.262 for Minecraft 1.21.1
          */
         version: string
     }

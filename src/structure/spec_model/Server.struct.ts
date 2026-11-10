@@ -13,6 +13,7 @@ import { MinecraftVersion } from '../../util/MinecraftVersion.js'
 import { addSchemaToObject, SchemaTypes } from '../../util/SchemaUtil.js'
 import { isValidUrl } from '../../util/StringUtils.js'
 import { FabricResolver } from '../../resolver/fabric/Fabric.resolver.js'
+import { NeoForgeResolver } from '../../resolver/neoforge/NeoForge.resolver.js'
 
 export interface CreateServerResult {
     modContainer?: string
@@ -55,6 +56,7 @@ export class ServerStructure extends BaseModelStructure<Server> {
         options: {
             version?: string
             forgeVersion?: string
+            neoforgeVersion?: string
             fabricVersion?: string
         }
     ): Promise<CreateServerResult | null> {
@@ -86,6 +88,22 @@ export class ServerStructure extends BaseModelStructure<Server> {
             await fms.init()
             modContainer = fms.getContainerDirectory()
             serverMetaOpts.forgeVersion = options.forgeVersion
+        }
+
+        if (options.neoforgeVersion != null) {
+            // NeoForge mods use the same FML mod container as Forge mods, so the
+            // existing forgemods structure applies unchanged.
+            const fms = VersionSegmentedRegistry.getForgeModStruct(
+                minecraftVersion,
+                options.neoforgeVersion,
+                absoluteServerRoot,
+                relativeServerRoot,
+                this.baseUrl,
+                []
+            )
+            await fms.init()
+            modContainer = fms.getContainerDirectory()
+            serverMetaOpts.neoforgeVersion = options.neoforgeVersion
         }
 
         if (options.fabricVersion != null) {
@@ -198,6 +216,41 @@ export class ServerStructure extends BaseModelStructure<Server> {
 
                     const forgeModModules = await forgeModStruct.getSpecModel()
                     modules.push(...forgeModModules)
+                }
+
+                if(serverMeta.neoforge) {
+                    const neoforgeResolver = new NeoForgeResolver(
+                        dirname(this.containerDirectory),
+                        '',
+                        this.baseUrl,
+                        minecraftVersion,
+                        serverMeta.neoforge.version,
+                        this.discardOutput,
+                        this.invalidateCache
+                    )
+
+                    if (!neoforgeResolver.isForVersion(minecraftVersion, serverMeta.neoforge.version)) {
+                        throw new Error(
+                            `NeoForge does not support Minecraft ${minecraftVersion}. `
+                            + 'NeoForge targets Minecraft 1.20.2 and above.'
+                        )
+                    }
+
+                    // Resolve NeoForge
+                    const neoforgeItselfModule = await neoforgeResolver.getModule()
+                    modules.push(neoforgeItselfModule)
+
+                    const neoforgeModStruct = VersionSegmentedRegistry.getForgeModStruct(
+                        minecraftVersion,
+                        serverMeta.neoforge.version,
+                        absoluteServerRoot,
+                        relativeServerRoot,
+                        this.baseUrl,
+                        untrackedFiles
+                    )
+
+                    const neoforgeModModules = await neoforgeModStruct.getSpecModel()
+                    modules.push(...neoforgeModModules)
                 }
 
                 if(serverMeta.fabric) {

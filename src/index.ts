@@ -176,11 +176,17 @@ const generateServerCommand: CommandModule = {
                 describe: 'Forge version.',
                 type: 'string'
             })
+            .option('neoforge', {
+                describe: 'NeoForge version.',
+                type: 'string'
+            })
             .option('fabric', {
                 describe: 'Fabric version.',
                 type: 'string'
             })
             .conflicts('forge', 'fabric')
+            .conflicts('forge', 'neoforge')
+            .conflicts('neoforge', 'fabric')
     },
     handler: async (argv) => {
         argv.root = getRoot()
@@ -188,6 +194,7 @@ const generateServerCommand: CommandModule = {
         logger.debug(`Root set to ${argv.root}`)
         logger.debug(`Generating server ${argv.id} for Minecraft ${argv.version}.`,
             `\n\t└ Forge version: ${argv.forge}`,
+            `\n\t└ NeoForge version: ${argv.neoforge}`,
             `\n\t└ Fabric version: ${argv.fabric}`
         )
 
@@ -206,10 +213,25 @@ const generateServerCommand: CommandModule = {
                 logger.error('┃                                                         ┃')
                 logger.error('┃    Forge 1.20.3+ removed support for --fml.modLists.    ┃')
                 logger.error('┃  Helios Launcher can no longer load mods through Forge. ┃')
-                logger.error('┃      Please use Fabric or await NeoForged Support.      ┃')
+                logger.error('┃        Please use --neoforge or --fabric instead.       ┃')
                 logger.error('┃                                                         ┃')
                 logger.error('┃                     !!  WARNING !!                      ┃')
                 logger.error('┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛')
+            }
+        }
+
+        if(argv.neoforge != null) {
+            if(!minecraftVersion.isGreaterThanOrEqualTo(new MinecraftVersion('1.20.2'))) {
+                throw new Error(
+                    `NeoForge does not support Minecraft ${minecraftVersion}. `
+                    + 'NeoForge targets Minecraft 1.20.2 and above. Use --forge for older versions.'
+                )
+            }
+            if (VersionUtil.isPromotionVersion(argv.neoforge as string)) {
+                logger.debug(`Resolving ${argv.neoforge as string} NeoForge Version..`)
+                const version = await VersionUtil.getPromotedNeoForgeVersion(minecraftVersion, argv.neoforge as string)
+                logger.debug(`NeoForge version set to ${version}`)
+                argv.neoforge = version
             }
         }
 
@@ -228,6 +250,7 @@ const generateServerCommand: CommandModule = {
             minecraftVersion,
             {
                 forgeVersion: argv.forge as string,
+                neoforgeVersion: argv.neoforge as string,
                 fabricVersion: argv.fabric as string
             }
         )
@@ -260,11 +283,31 @@ const generateServerCurseForgeCommand: CommandModule = {
 
         const minecraftVersion = new MinecraftVersion(modpackManifest.minecraft.version)
 
-        // Extract forge version
+        // Extract the mod loader version.
         // TODO Support fabric
-        const forgeModLoader = modpackManifest.minecraft.modLoaders.find(({ id }) => id.toLowerCase().startsWith('forge-'))
-        const forgeVersion = forgeModLoader != null ? forgeModLoader.id.substring('forge-'.length) : undefined
-        logger.debug(`Forge version set to ${forgeVersion}`)
+        // NeoForge must be matched first -- 'neoforge-' also ends with 'forge-'
+        // when matched loosely, and the two are not interchangeable.
+        const loaders = modpackManifest.minecraft.modLoaders
+
+        const neoforgeModLoader = loaders.find(({ id }) => id.toLowerCase().startsWith('neoforge-'))
+        const neoforgeVersion = neoforgeModLoader != null
+            ? neoforgeModLoader.id.substring('neoforge-'.length)
+            : undefined
+
+        const forgeModLoader = loaders.find(({ id }) => id.toLowerCase().startsWith('forge-'))
+        const forgeVersion = forgeModLoader != null
+            ? forgeModLoader.id.substring('forge-'.length)
+            : undefined
+
+        if(neoforgeVersion == null && forgeVersion == null) {
+            logger.warn('No Forge or NeoForge mod loader found in the modpack manifest.')
+            logger.warn(`Declared mod loaders: ${loaders.map(({ id }) => id).join(', ') || '(none)'}`)
+            logger.warn('The generated server will have no mod loader. Add one to servermeta.json manually.')
+        } else if(neoforgeVersion != null) {
+            logger.debug(`NeoForge version set to ${neoforgeVersion}`)
+        } else {
+            logger.debug(`Forge version set to ${forgeVersion}`)
+        }
 
         const serverStruct = new ServerStructure(argv.root as string, getBaseURL(), false, false)
         const createServerResult = await serverStruct.createServer(
@@ -272,7 +315,8 @@ const generateServerCurseForgeCommand: CommandModule = {
             minecraftVersion,
             {
                 version: modpackManifest.version,
-                forgeVersion
+                forgeVersion,
+                neoforgeVersion
             }
         )
 

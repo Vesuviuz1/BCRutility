@@ -75,11 +75,26 @@ export class ForgeModStructure113 extends BaseForgeModStructure<ModsToml> {
             return this.modMetadata[name]
         }
 
+        // NeoForge renamed the mod descriptor in 1.20.5. Mods built for NeoForge
+        // ship META-INF/neoforge.mods.toml, while Forge mods (and older NeoForge
+        // mods) ship META-INF/mods.toml. Check both so a single mod container can
+        // hold either.
+        const descriptorCandidates = [
+            'META-INF/neoforge.mods.toml',
+            'META-INF/mods.toml'
+        ]
+
         let raw: Buffer | undefined
-        try {
-            raw = zip.entryDataSync('META-INF/mods.toml')
-        } catch(err) {
-            // ignored
+        let descriptorName: string | undefined
+
+        for (const candidate of descriptorCandidates) {
+            try {
+                raw = zip.entryDataSync(candidate)
+                descriptorName = candidate
+                break
+            } catch(err) {
+                // Not present, try the next candidate.
+            }
         }
 
         if (raw) {
@@ -87,10 +102,10 @@ export class ForgeModStructure113 extends BaseForgeModStructure<ModsToml> {
                 const parsed = toml.parse(raw.toString()) as ModsToml
                 this.modMetadata[name] = parsed
             } catch (err) {
-                this.logger.error(`ForgeMod ${name} contains an invalid mods.toml file.`)
+                this.logger.error(`ForgeMod ${name} contains an invalid ${descriptorName} file.`)
             }
         } else {
-            this.logger.error(`ForgeMod ${name} does not contain mods.toml file.`)
+            this.logger.error(`ForgeMod ${name} does not contain a mods.toml or neoforge.mods.toml file.`)
         }
 
         const cRes = this.claritasResult?.[path]
