@@ -8,7 +8,7 @@
       "description": "Black Clover Republic Official Server",
       "icon": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/server-icon.png",
       "version": "0.2.15",
-      "address": "localhost:25565",
+      "address": "play.blackcloverrepublic.net",
       "minecraftVersion": "1.21.1",
       "discord": {
         "shortId": "Black Clover",
