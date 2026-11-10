@@ -89,3 +89,14 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+# ---------------------------------------------------------------
+# Nebula ROOT output (this repo is also the distribution root)
+# ---------------------------------------------------------------
+# Installer scratch space. Local only, larger than everything we
+# publish, and cheap to regenerate. Never commit it.
+cache/
+temp/
+work/
+
+# Machine-specific helper (absolute paths)
+nebula.bat

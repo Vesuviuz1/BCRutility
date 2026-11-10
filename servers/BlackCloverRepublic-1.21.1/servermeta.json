@@ -1,0 +1,40 @@
+{
+  "$schema": "file:///C:/Users/Bigza/OneDrive/Desktop/BCRutility/schemas/ServerMetaSchema.schema.json",
+  "meta": {
+    "version": "0.2.15",
+    "name": "Black Clover Republic (1.21.1)",
+    "description": "Black Clover Republic Official Server",
+    "address": "localhost:25565",
+    "discord": {
+      "shortId": "Black Clover",
+      "largeImageText": "Black Clover Republic",
+      "largeImageKey": "icon"
+    },
+    "mainServer": true,
+    "autoconnect": true,
+    "javaOptions": {
+      "distribution": "TEMURIN",
+      "supported": ">=21.x <22.x",
+      "suggestedMajor": 21,
+      "ram": {
+        "recommended": 8192,
+        "minimum": 4096
+      }
+    }
+  },
+  "neoforge": {
+    "version": "21.1.262"
+  },
+  "untrackedFiles": [
+    {
+      "appliesTo": [
+        "files"
+      ],
+      "patterns": [
+        "config/*.toml",
+        "config/**/*.toml",
+        "config/**/*.json"
+      ]
+    }
+  ]
+}

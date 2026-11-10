@@ -1,0 +1,6 @@
+{
+  "$schema": "file:///C:/Users/Bigza/OneDrive/Desktop/BCRutility/schemas/DistroMetaSchema.schema.json",
+  "meta": {
+    "rss": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/news.xml"
+  }
+}
