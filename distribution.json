@@ -7,7 +7,7 @@
       "name": "Black Clover Republic (1.21.1)",
       "description": "Black Clover Republic Official Server",
       "icon": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/server-icon.png",
-      "version": "0.2.16",
+      "version": "0.2.17",
       "address": "play.blackcloverrepublic.net",
       "minecraftVersion": "1.21.1",
       "discord": {
@@ -613,13 +613,14 @@
           }
         },
         {
-          "id": "generated.forgemod:sodium:0.8.13-beta.2+mc1.21.1@jar",
-          "name": "Sodium",
-          "type": "ForgeMod",
+          "id": "sodium-neoforge-0.8.13-beta.2+mc1.21.1.jar",
+          "name": "sodium-neoforge-0.8.13-beta.2+mc1.21.1.jar",
+          "type": "File",
           "artifact": {
             "size": 1292887,
-            "url": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/forgemods/required/sodium-neoforge-0.8.13-beta.2+mc1.21.1.jar",
-            "MD5": "ff9bcdbbd283c224379de386dc316c0e"
+            "url": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/files/mods/sodium-neoforge-0.8.13-beta.2+mc1.21.1.jar",
+            "MD5": "ff9bcdbbd283c224379de386dc316c0e",
+            "path": "mods/sodium-neoforge-0.8.13-beta.2+mc1.21.1.jar"
           }
         }
       ]
