@@ -4,13 +4,13 @@ import { pathExists } from 'fs-extra/esm'
 import { Stats } from 'fs'
 import { lstat, readdir, readFile } from 'fs/promises'
 import { Artifact, Module, Type, TypeMetadata } from 'helios-distribution-types'
-import { resolve } from 'path'
+import { resolve, sep } from 'path'
 import { BaseModelStructure } from '../BaseModel.struct.js'
 import { LibraryType } from '../../../model/claritas/ClaritasLibraryType.js'
 import { ClaritasResult, ClaritasModuleMetadata } from '../../../model/claritas/ClaritasResult.js'
 import { ClaritasWrapper } from '../../../util/java/ClaritasWrapper.js'
 import { MinecraftVersion } from '../../../util/MinecraftVersion.js'
-import { UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
+import { ExternalHostOption, UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
 
 export interface ModuleCandidate {
     file: string
@@ -31,7 +31,8 @@ export abstract class ModuleStructure extends BaseModelStructure<Module> {
         '.gitkeep'
     ]
 
-    protected untrackedFilePatterns: string[]          // List of glob patterns. 
+    protected untrackedFilePatterns: string[]          // List of glob patterns.
+    protected externalHostRules: ExternalHostOption[]  // Applicable external host redirects.
     protected claritasResult!: ClaritasResult
 
     constructor(
@@ -42,10 +43,12 @@ export abstract class ModuleStructure extends BaseModelStructure<Module> {
         protected minecraftVersion: MinecraftVersion,
         protected type: Type,
         untrackedFiles: UntrackedFilesOption[],
+        externalHosts: ExternalHostOption[] = [],
         protected filter?: ((name: string, path: string, stats: Stats) => boolean)
     ) {
         super(absoluteRoot, relativeRoot, structRoot, baseUrl)
         this.untrackedFilePatterns = this.determineUntrackedFiles(structRoot, untrackedFiles)
+        this.externalHostRules = this.determineExternalHosts(structRoot, externalHosts)
     }
 
     public async getSpecModel(): Promise<Module[]> {
@@ -98,12 +101,18 @@ export abstract class ModuleStructure extends BaseModelStructure<Module> {
 
     protected async parseModule(file: string, filePath: string, stats: Stats): Promise<Module> {
 
+        const relativeToContainer = filePath.substr(this.containerDirectory.length+1)
+
+        const externalUrl = this.resolveExternalUrl(file, relativeToContainer)
+        if(externalUrl) {
+            this.logger.info(`File ${relativeToContainer} is served externally from ${externalUrl}`)
+        }
+
         const artifact: Artifact = {
             size: stats.size,
-            url: await this.getModuleUrl(file, filePath, stats)
+            url: externalUrl ?? await this.getModuleUrl(file, filePath, stats)
         }
-        
-        const relativeToContainer = filePath.substr(this.containerDirectory.length+1)
+
         const untrackedByPattern = this.isFileUntracked(relativeToContainer)
         if(!untrackedByPattern) {
             const buf = await readFile(filePath)
@@ -216,6 +225,33 @@ export abstract class ModuleStructure extends BaseModelStructure<Module> {
     // Will return the matching pattern, undefined if no match.
     protected isFileUntracked(pathRelativeToContainer: string): string | undefined {
         return this.untrackedFilePatterns.find(pattern => minimatch(pathRelativeToContainer, pattern))
+    }
+
+    protected determineExternalHosts(targetStructRoot: string, externalHostOptions?: ExternalHostOption[]): ExternalHostOption[] {
+        if(externalHostOptions) {
+            return externalHostOptions.filter(x => x.appliesTo.includes(targetStructRoot))
+        }
+        return []
+    }
+
+    /**
+     * Resolve the external download url for a file, if any rule matches it.
+     * Patterns are tested against both the path relative to the struct's
+     * container directory and the bare file name. Returns undefined when the
+     * file should be served from the primary base url.
+     */
+    protected resolveExternalUrl(fileName: string, pathRelativeToContainer: string): string | undefined {
+        // Normalize Windows separators so glob patterns behave consistently.
+        const normalizedPath = pathRelativeToContainer.split(sep).join('/')
+        for(const rule of this.externalHostRules) {
+            const matched = rule.patterns.some(pattern =>
+                minimatch(normalizedPath, pattern) || minimatch(fileName, pattern)
+            )
+            if(matched) {
+                return `${rule.baseUrl.endsWith('/') ? rule.baseUrl : `${rule.baseUrl}/`}${fileName}`
+            }
+        }
+        return undefined
     }
 
 }

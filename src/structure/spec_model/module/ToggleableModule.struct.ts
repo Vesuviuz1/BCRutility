@@ -4,7 +4,7 @@ import { mkdirs } from 'fs-extra/esm'
 import { Stats } from 'fs'
 import { resolve } from 'path'
 import { MinecraftVersion } from '../../../util/MinecraftVersion.js'
-import { UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
+import { ExternalHostOption, UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
 
 export enum ToggleableNamespace {
 
@@ -30,9 +30,10 @@ export abstract class ToggleableModuleStructure extends ModuleStructure {
         minecraftVersion: MinecraftVersion,
         type: Type,
         untrackedFiles: UntrackedFilesOption[],
+        externalHosts: ExternalHostOption[] = [],
         filter?: ((name: string, path: string, stats: Stats) => boolean)
     ) {
-        super(absoluteRoot, relativeRoot, structRoot, baseUrl, minecraftVersion, type, untrackedFiles, filter)
+        super(absoluteRoot, relativeRoot, structRoot, baseUrl, minecraftVersion, type, untrackedFiles, externalHosts, filter)
     }
 
     public async init(): Promise<void> {

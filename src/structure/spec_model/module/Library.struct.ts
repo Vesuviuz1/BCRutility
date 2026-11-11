@@ -4,7 +4,7 @@ import { Stats } from 'fs'
 import { join } from 'path'
 import { URL } from 'url'
 import { MinecraftVersion } from '../../../util/MinecraftVersion.js'
-import { UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
+import { ExternalHostOption, UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
 
 export class LibraryStructure extends ModuleStructure {
 
@@ -13,9 +13,10 @@ export class LibraryStructure extends ModuleStructure {
         relativeRoot: string,
         baseUrl: string,
         minecraftVersion: MinecraftVersion,
-        untrackedFiles: UntrackedFilesOption[]
+        untrackedFiles: UntrackedFilesOption[],
+        externalHosts: ExternalHostOption[] = []
     ) {
-        super(absoluteRoot, relativeRoot, 'libraries', baseUrl, minecraftVersion, Type.Library, untrackedFiles, (name: string) => {
+        super(absoluteRoot, relativeRoot, 'libraries', baseUrl, minecraftVersion, Type.Library, untrackedFiles, externalHosts, (name: string) => {
             return name.toLowerCase().endsWith(TypeMetadata[this.type].defaultExtension!)
         })
     }

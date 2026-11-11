@@ -6,7 +6,7 @@ import { ModuleStructure } from './Module.struct.js'
 import { readdir, stat } from 'fs/promises'
 import { join, resolve, sep } from 'path'
 import { MinecraftVersion } from '../../../util/MinecraftVersion.js'
-import { UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
+import { ExternalHostOption, UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
 
 export class MiscFileStructure extends ModuleStructure {
 
@@ -15,9 +15,10 @@ export class MiscFileStructure extends ModuleStructure {
         relativeRoot: string,
         baseUrl: string,
         minecraftVersion: MinecraftVersion,
-        untrackedFiles: UntrackedFilesOption[]
+        untrackedFiles: UntrackedFilesOption[],
+        externalHosts: ExternalHostOption[] = []
     ) {
-        super(absoluteRoot, relativeRoot, 'files', baseUrl, minecraftVersion, Type.File, untrackedFiles)
+        super(absoluteRoot, relativeRoot, 'files', baseUrl, minecraftVersion, Type.File, untrackedFiles, externalHosts)
     }
 
     public getLoggerName(): string {

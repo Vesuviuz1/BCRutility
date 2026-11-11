@@ -7,8 +7,8 @@
       "name": "Black Clover Republic (1.21.1)",
       "description": "Black Clover Republic Official Server",
       "icon": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/server-icon.png",
-      "version": "0.2.15",
-      "address": "localhost:25565",
+      "version": "0.2.16",
+      "address": "play.blackcloverrepublic.net",
       "minecraftVersion": "1.21.1",
       "discord": {
         "shortId": "Black Clover",
@@ -567,6 +567,60 @@
               }
             }
           ]
+        },
+        {
+          "id": "generated.forgemod:blackclover:0.3.1@jar",
+          "name": "Black Clover",
+          "type": "ForgeMod",
+          "artifact": {
+            "size": 123542543,
+            "url": "https://github.com/Vesuviuz1/BCRutility/releases/download/mods-1.21.1/blackclover-1.21.1-0.3.1.jar",
+            "MD5": "16bebac808a9c34a9d2a3e5e34be8ea8"
+          }
+        },
+        {
+          "id": "generated.forgemod:distanthorizons:3.3.3@jar",
+          "name": "Distant Horizons",
+          "type": "ForgeMod",
+          "artifact": {
+            "size": 28289212,
+            "url": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/forgemods/optionaloff/DistantHorizons-3.3.3-1.21.1.jar",
+            "MD5": "578523767ee8cef71a9933a79126f67b"
+          },
+          "required": {
+            "value": false,
+            "def": false
+          }
+        },
+        {
+          "id": "generated.forgemod:iris:1.8.14-beta.1+mc1.21.1@jar",
+          "name": "Iris",
+          "type": "ForgeMod",
+          "artifact": {
+            "size": 2540723,
+            "url": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/forgemods/required/iris-neoforge-1.8.14-beta.1+mc1.21.1.jar",
+            "MD5": "6b68276a6718656ec476cfac69dfe013"
+          }
+        },
+        {
+          "id": "generated.forgemod:jei:19.32.0.359@jar",
+          "name": "Just Enough Items",
+          "type": "ForgeMod",
+          "artifact": {
+            "size": 1616910,
+            "url": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/forgemods/required/jei-1.21.1-neoforge-19.32.0.359.jar",
+            "MD5": "d1c721e7d4ef1bf0d22651b371406ef3"
+          }
+        },
+        {
+          "id": "generated.forgemod:sodium:0.8.13-beta.2+mc1.21.1@jar",
+          "name": "Sodium",
+          "type": "ForgeMod",
+          "artifact": {
+            "size": 1292887,
+            "url": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/forgemods/required/sodium-neoforge-0.8.13-beta.2+mc1.21.1.jar",
+            "MD5": "ff9bcdbbd283c224379de386dc316c0e"
+          }
         }
       ]
     }

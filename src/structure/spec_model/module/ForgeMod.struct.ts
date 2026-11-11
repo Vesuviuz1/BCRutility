@@ -4,7 +4,7 @@ import { MinecraftVersion } from '../../../util/MinecraftVersion.js'
 import { BaseModStructure } from './Mod.struct.js'
 import { LibraryType } from '../../../model/claritas/ClaritasLibraryType.js'
 import { ClaritasException } from './Module.struct.js'
-import { UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
+import { ExternalHostOption, UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
 
 export abstract class BaseForgeModStructure<T> extends BaseModStructure<T> implements VersionSegmented {
 
@@ -15,9 +15,10 @@ export abstract class BaseForgeModStructure<T> extends BaseModStructure<T> imple
         relativeRoot: string,
         baseUrl: string,
         minecraftVersion: MinecraftVersion,
-        untrackedFiles: UntrackedFilesOption[]
+        untrackedFiles: UntrackedFilesOption[],
+        externalHosts: ExternalHostOption[] = []
     ) {
-        super(absoluteRoot, relativeRoot, 'forgemods', baseUrl, minecraftVersion, Type.ForgeMod, untrackedFiles)
+        super(absoluteRoot, relativeRoot, 'forgemods', baseUrl, minecraftVersion, Type.ForgeMod, untrackedFiles, externalHosts)
     }
 
     public abstract isForVersion(version: MinecraftVersion, libraryVersion: string): boolean

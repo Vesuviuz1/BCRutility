@@ -5,7 +5,7 @@ import { ForgeGradle2Adapter } from '../resolver/forge/adapter/ForgeGradle2.reso
 import { ForgeResolver } from '../resolver/forge/Forge.resolver.js'
 import { BaseForgeModStructure } from '../structure/spec_model/module/ForgeMod.struct.js'
 import { MinecraftVersion } from './MinecraftVersion.js'
-import { UntrackedFilesOption } from '../model/nebula/ServerMeta.js'
+import { ExternalHostOption, UntrackedFilesOption } from '../model/nebula/ServerMeta.js'
 
 export class VersionSegmentedRegistry {
 
@@ -42,11 +42,12 @@ export class VersionSegmentedRegistry {
         absoluteRoot: string,
         relativeRoot: string,
         baseUrl: string,
-        untrackedFiles: UntrackedFilesOption[]
+        untrackedFiles: UntrackedFilesOption[],
+        externalHosts: ExternalHostOption[] = []
     ): BaseForgeModStructure<unknown> {
         for (const impl of VersionSegmentedRegistry.FORGEMOD_STRUCT_IMPL) {
             if (impl.isForVersion(minecraftVersion, forgeVersion)) {
-                return new impl(absoluteRoot, relativeRoot, baseUrl, minecraftVersion, untrackedFiles)
+                return new impl(absoluteRoot, relativeRoot, baseUrl, minecraftVersion, untrackedFiles, externalHosts)
             }
         }
         throw new Error(`No forge mod structure found for Minecraft ${minecraftVersion}!`)

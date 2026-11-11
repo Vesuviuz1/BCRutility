@@ -1,10 +1,10 @@
 {
   "$schema": "file:///C:/Users/Bigza/OneDrive/Desktop/BCRutility/schemas/ServerMetaSchema.schema.json",
   "meta": {
-    "version": "0.2.15",
+    "version": "0.2.16",
     "name": "Black Clover Republic (1.21.1)",
     "description": "Black Clover Republic Official Server",
-    "address": "localhost:25565",
+    "address": "play.blackcloverrepublic.net",
     "discord": {
       "shortId": "Black Clover",
       "largeImageText": "Black Clover Republic",
@@ -35,6 +35,17 @@
         "config/**/*.toml",
         "config/**/*.json"
       ]
+    }
+  ],
+  "externalHosts": [
+    {
+      "appliesTo": [
+        "forgemods"
+      ],
+      "patterns": [
+        "blackclover-*.jar"
+      ],
+      "baseUrl": "https://github.com/Vesuviuz1/BCRutility/releases/download/mods-1.21.1/"
     }
   ]
 }

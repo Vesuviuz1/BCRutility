@@ -4,7 +4,7 @@ import { capitalize } from '../../../util/StringUtils.js'
 import { FabricModJson } from '../../../model/fabric/FabricModJson.js'
 import { MinecraftVersion } from '../../../util/MinecraftVersion.js'
 import { BaseModStructure } from './Mod.struct.js'
-import { UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
+import { ExternalHostOption, UntrackedFilesOption } from '../../../model/nebula/ServerMeta.js'
 
 export class FabricModStructure extends BaseModStructure<FabricModJson> {
 
@@ -13,9 +13,10 @@ export class FabricModStructure extends BaseModStructure<FabricModJson> {
         relativeRoot: string,
         baseUrl: string,
         minecraftVersion: MinecraftVersion,
-        untrackedFiles: UntrackedFilesOption[]
+        untrackedFiles: UntrackedFilesOption[],
+        externalHosts: ExternalHostOption[] = []
     ) {
-        super(absoluteRoot, relativeRoot, 'fabricmods', baseUrl, minecraftVersion, Type.FabricMod, untrackedFiles)
+        super(absoluteRoot, relativeRoot, 'fabricmods', baseUrl, minecraftVersion, Type.FabricMod, untrackedFiles, externalHosts)
     }
 
     public getLoggerName(): string {

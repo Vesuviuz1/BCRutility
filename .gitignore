@@ -100,3 +100,17 @@ work/
 
 # Machine-specific helper (absolute paths)
 nebula.bat
+
+# ---------------------------------------------------------------
+# Externally hosted mods
+# ---------------------------------------------------------------
+# GitHub rejects any file over 100 MiB, and raw.githubusercontent.com
+# serves LFS pointers rather than the real jar, so this one is shipped
+# as a GitHub Release asset instead. The "externalHosts" block in
+# servers/BlackCloverRepublic-1.21.1/servermeta.json points the
+# generated distribution.json at that release.
+#
+# Keep the jar in forgemods/required/ locally: the generator still
+# reads it to compute the size and MD5 it writes into the distribution.
+# After updating it, upload the new jar to the "mods-1.21.1" release.
+servers/BlackCloverRepublic-1.21.1/forgemods/required/blackclover-*.jar

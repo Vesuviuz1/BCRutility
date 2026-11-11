@@ -4,7 +4,7 @@ import { Server, Module } from 'helios-distribution-types'
 import { dirname, join, resolve as resolvePath } from 'path'
 import { URL } from 'url'
 import { VersionSegmentedRegistry } from '../../util/VersionSegmentedRegistry.js'
-import { ServerMeta, getDefaultServerMeta, ServerMetaOptions, UntrackedFilesOption } from '../../model/nebula/ServerMeta.js'
+import { ServerMeta, getDefaultServerMeta, ServerMetaOptions, UntrackedFilesOption, ExternalHostOption } from '../../model/nebula/ServerMeta.js'
 import { BaseModelStructure } from './BaseModel.struct.js'
 import { FabricModStructure } from './module/FabricMod.struct.js'
 import { MiscFileStructure } from './module/File.struct.js'
@@ -162,6 +162,7 @@ export class ServerStructure extends BaseModelStructure<Server> {
                 const serverMeta = JSON.parse(await readFile(resolvePath(absoluteServerRoot, this.SERVER_META_FILE), 'utf-8')) as ServerMeta
                 const minecraftVersion = new MinecraftVersion(match[2])
                 const untrackedFiles: UntrackedFilesOption[] = serverMeta.untrackedFiles || []
+                const externalHosts: ExternalHostOption[] = serverMeta.externalHosts || []
 
                 let iconUrl: string = null!
 
@@ -211,7 +212,8 @@ export class ServerStructure extends BaseModelStructure<Server> {
                         absoluteServerRoot,
                         relativeServerRoot,
                         this.baseUrl,
-                        untrackedFiles
+                        untrackedFiles,
+                        externalHosts
                     )
 
                     const forgeModModules = await forgeModStruct.getSpecModel()
@@ -246,7 +248,8 @@ export class ServerStructure extends BaseModelStructure<Server> {
                         absoluteServerRoot,
                         relativeServerRoot,
                         this.baseUrl,
-                        untrackedFiles
+                        untrackedFiles,
+                        externalHosts
                     )
 
                     const neoforgeModModules = await neoforgeModStruct.getSpecModel()
@@ -267,18 +270,19 @@ export class ServerStructure extends BaseModelStructure<Server> {
                         relativeServerRoot,
                         this.baseUrl,
                         minecraftVersion,
-                        untrackedFiles
+                        untrackedFiles,
+                        externalHosts
                     )
 
                     const fabricModModules = await fabricModStruct.getSpecModel()
                     modules.push(...fabricModModules)
                 }
 
-                const libraryStruct = new LibraryStructure(absoluteServerRoot, relativeServerRoot, this.baseUrl, minecraftVersion, untrackedFiles)
+                const libraryStruct = new LibraryStructure(absoluteServerRoot, relativeServerRoot, this.baseUrl, minecraftVersion, untrackedFiles, externalHosts)
                 const libraryModules = await libraryStruct.getSpecModel()
                 modules.push(...libraryModules)
 
-                const fileStruct = new MiscFileStructure(absoluteServerRoot, relativeServerRoot, this.baseUrl, minecraftVersion, untrackedFiles)
+                const fileStruct = new MiscFileStructure(absoluteServerRoot, relativeServerRoot, this.baseUrl, minecraftVersion, untrackedFiles, externalHosts)
                 const fileModules = await fileStruct.getSpecModel()
                 modules.push(...fileModules)
 

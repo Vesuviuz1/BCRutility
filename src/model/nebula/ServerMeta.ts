@@ -12,6 +12,32 @@ export interface UntrackedFilesOption {
     patterns: string[]
 }
 
+export interface ExternalHostOption {
+    /**
+     * The subdirectory these patterns will be applied to. Ex.
+     * [ "files", "forgemods" ]
+     */
+    appliesTo: string[]
+    /**
+     * Glob patterns to match against the file. Each pattern is tested
+     * against both the path relative to the subdirectory (ex.
+     * "required/foo.jar") and the bare file name (ex. "foo.jar"), so
+     * "foo-*.jar" matches regardless of which namespace it sits in.
+     */
+    patterns: string[]
+    /**
+     * The base url matched files are served from. The file's name is
+     * appended to this value to form the final download url, so a file
+     * named foo.jar with a baseUrl of "https://example.com/mods/"
+     * resolves to "https://example.com/mods/foo.jar".
+     *
+     * Use this for files that cannot live in your main file host, such as
+     * mod jars above GitHub's 100 MiB per-file limit. The file must still
+     * exist locally so its size and MD5 can be computed.
+     */
+    baseUrl: string
+}
+
 export interface ServerMetaOptions {
     version?: string
     forgeVersion?: string
@@ -120,5 +146,11 @@ export interface ServerMeta {
      * A list of option objects defining patterns for untracked files.
      */
     untrackedFiles?: UntrackedFilesOption[]
+
+    /**
+     * A list of option objects redirecting matched files to an alternate
+     * file host. Useful for files too large for your primary host.
+     */
+    externalHosts?: ExternalHostOption[]
 
 }
