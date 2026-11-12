@@ -1,5 +1,5 @@
 {
-  "version": "0.3.1",
+  "version": "1.0.0",
   "rss": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/news.xml",
   "servers": [
     {
@@ -7,7 +7,7 @@
       "name": "Black Clover Republic (1.21.1)",
       "description": "Black Clover Republic Official Server",
       "icon": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/server-icon.png",
-      "version": "0.2.17",
+      "version": "0.2.18",
       "address": "play.blackcloverrepublic.net",
       "minecraftVersion": "1.21.1",
       "discord": {
@@ -569,13 +569,13 @@
           ]
         },
         {
-          "id": "generated.forgemod:blackclover:0.3.1@jar",
+          "id": "generated.forgemod:blackclover:0.3.2@jar",
           "name": "Black Clover",
           "type": "ForgeMod",
           "artifact": {
-            "size": 123542543,
-            "url": "https://github.com/Vesuviuz1/BCRutility/releases/download/mods-1.21.1/blackclover-1.21.1-0.3.1.jar",
-            "MD5": "16bebac808a9c34a9d2a3e5e34be8ea8"
+            "size": 123606310,
+            "url": "https://github.com/Vesuviuz1/BCRutility/releases/download/mods-1.21.1/blackclover-1.21.1-0.3.2.jar",
+            "MD5": "225641215f146de26e7484dd9e5bb1b8"
           }
         },
         {
