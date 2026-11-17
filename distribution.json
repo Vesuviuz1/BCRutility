@@ -7,7 +7,7 @@
       "name": "Black Clover Republic (1.21.1)",
       "description": "Black Clover Republic Official Server",
       "icon": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/server-icon.png",
-      "version": "0.2.19",
+      "version": "0.2.20",
       "address": "play.blackcloverrepublic.net",
       "minecraftVersion": "1.21.1",
       "discord": {
@@ -569,13 +569,13 @@
           ]
         },
         {
-          "id": "generated.forgemod:blackclover:0.3.3@jar",
+          "id": "generated.forgemod:blackclover:0.3.4@jar",
           "name": "Black Clover",
           "type": "ForgeMod",
           "artifact": {
-            "size": 123655411,
-            "url": "https://github.com/Vesuviuz1/BCRutility/releases/download/mods-1.21.1/blackclover-1.21.1-0.3.3.jar",
-            "MD5": "e5fc19a54b8fda25d5d2ce281368462f"
+            "size": 135105459,
+            "url": "https://github.com/Vesuviuz1/BCRutility/releases/download/mods-1.21.1/blackclover-1.21.1-0.3.4.jar",
+            "MD5": "ae360c25f13a628f8be1925a46428f5b"
           }
         },
         {
@@ -612,13 +612,13 @@
           }
         },
         {
-          "id": "generated.forgemod:murmur:1.0.0@jar",
+          "id": "generated.forgemod:murmur:1.1.0@jar",
           "name": "Murmur",
           "type": "ForgeMod",
           "artifact": {
-            "size": 427089,
-            "url": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/forgemods/required/murmur-1.0.0.jar",
-            "MD5": "b156a67a57d440b1ed75df552935c977"
+            "size": 1186255,
+            "url": "https://raw.githubusercontent.com/Vesuviuz1/BCRutility/main/servers/BlackCloverRepublic-1.21.1/forgemods/required/murmur-1.1.0.jar",
+            "MD5": "57816983bfb4c05799be26e143f3ffaa"
           }
         },
         {
